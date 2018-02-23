@@ -24,8 +24,12 @@ window.onload = function () {
         if(screenname == "") {
             promptUserForScreenName()
         }
-        conn.send(msg.value);
-        msg.value = "";
+        var message = {
+            message: msg.value,
+            from: screenname
+        }
+        conn.send(JSON.stringify(message));
+        msg.value = ""; // clear message box
         return false;
     };
 
@@ -36,12 +40,16 @@ window.onload = function () {
             item.innerHTML = "<b>Connection closed.</b>";
             appendLog(item);
         };
+        /* GET MESSAGE */
         conn.onmessage = function (evt) {
             var messages = evt.data.split('\n');
             console.log(messages)
             for (var i = 0; i < messages.length; i++) {
+                var message = JSON.parse(messages[i])
                 var item = document.createElement("div");
-                item.innerHTML = `<b>${screenname}</b>: ${messages[i]}`; // display message
+                
+                // display message
+                item.innerHTML = `<b>${message.from}</b>: ${message.message}`;
                 appendLog(item);
             }
         };
