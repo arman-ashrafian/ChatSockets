@@ -20,7 +20,7 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 
 	// max message size
-	maxMessageSize = 512
+	maxMessageSize = 800
 )
 
 var (
