@@ -2,6 +2,8 @@ window.onload = function () {
     var conn;
     var msg = document.getElementById("msg");
     var log = document.getElementById("log");
+    var screenname = ""
+
 
     function appendLog(item) {
         var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
@@ -11,12 +13,16 @@ window.onload = function () {
         }
     }
 
+    /* SEND MESSAGE EVENT */
     document.getElementById("form").onsubmit = function () {
         if (!conn) {
             return false;
         }
         if (!msg.value) {
             return false;
+        }
+        if(screenname == "") {
+            promptUserForScreenName()
         }
         conn.send(msg.value);
         msg.value = "";
@@ -32,9 +38,10 @@ window.onload = function () {
         };
         conn.onmessage = function (evt) {
             var messages = evt.data.split('\n');
+            console.log(messages)
             for (var i = 0; i < messages.length; i++) {
                 var item = document.createElement("div");
-                item.innerText = messages[i];
+                item.innerHTML = `<b>${screenname}</b>: ${messages[i]}`; // display message
                 appendLog(item);
             }
         };
@@ -42,5 +49,9 @@ window.onload = function () {
         var item = document.createElement("div");
         item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
         appendLog(item);
+    }
+
+    function promptUserForScreenName() {
+        screenname = prompt("Enter screen name ya dum bitch");
     }
 };

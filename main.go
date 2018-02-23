@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var port = ":8000"
+var port = ":8080"
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
@@ -39,6 +39,7 @@ func main() {
 		servews(hub, w, r)
 	})
 
+	log.Println("Listening - Port:" + port)
 	err := http.ListenAndServe(port, r)
 	if err != nil {
 		log.Fatal("ListenAndSeve: ", err)
