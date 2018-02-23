@@ -1,0 +1,20 @@
+{
+	"ImportPath": "ChatSockets",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.6.1-10-gc0091a0",
+			"Rev": "c0091a029979286890368b4c7b301261e448e242"
+		},
+		{
+			"ImportPath": "github.com/gorilla/websocket",
+			"Comment": "v1.2.0-28-g4ac9097",
+			"Rev": "4ac909741dfa57448bfadfdbca0cf7eeaa68f0e2"
+		}
+	]
+}
