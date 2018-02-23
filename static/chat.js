@@ -43,7 +43,6 @@ window.onload = function () {
         /* GET MESSAGE */
         conn.onmessage = function (evt) {
             var messages = evt.data.split('\n');
-            console.log(messages)
             for (var i = 0; i < messages.length; i++) {
                 var message = JSON.parse(messages[i])
                 var item = document.createElement("div");
