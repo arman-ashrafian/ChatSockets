@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-var port = ":8080"
+var port = ":8000"
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
@@ -22,16 +24,22 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	hub := newHub()
+	r := mux.NewRouter() // Mux Router
 
-	go hub.run()
+	hub := newHub() // chat hub
+	go hub.run()    // run hub in a goroutine
 
-	http.HandleFunc("/", serveHome)
-	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+	// serve static files
+	r.PathPrefix("/static/").
+		Handler(http.StripPrefix("/static/",
+			http.FileServer(http.Dir("static"))))
+
+	r.HandleFunc("/", serveHome)
+	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		servews(hub, w, r)
 	})
 
-	err := http.ListenAndServe(port, nil)
+	err := http.ListenAndServe(port, r)
 	if err != nil {
 		log.Fatal("ListenAndSeve: ", err)
 	}
