@@ -3,11 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 )
-
-var port = ":8080"
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
@@ -24,6 +23,13 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "8080" // dev port
+	}
+	port = ":" + port
+
 	r := mux.NewRouter() // Mux Router
 
 	hub := newHub() // chat hub
