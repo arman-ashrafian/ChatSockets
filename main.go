@@ -1,12 +1,11 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"net/http"
 )
 
-var addr = flag.String("addr", ":8080", "http service address")
+var port = ":8080"
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)
@@ -23,8 +22,6 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	flag.Parse()
-
 	hub := newHub()
 
 	go hub.run()
@@ -34,7 +31,7 @@ func main() {
 		servews(hub, w, r)
 	})
 
-	err := http.ListenAndServe(*addr, nil)
+	err := http.ListenAndServe(port, nil)
 	if err != nil {
 		log.Fatal("ListenAndSeve: ", err)
 	}
