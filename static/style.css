@@ -1,4 +1,20 @@
 html {
+    height: 100%;
+}
+
+log {
+    position: absolute;
+    top:1em;
+    bottom:1em;
+}
+
+.messagecard {
+    padding: .5em;
+    font-size: large !important;
+}
+
+
+/* html {
     overflow: hidden;
 }
 body {
@@ -16,7 +32,7 @@ body {
     top: 0.5em;
     left: 0.5em;
     right: 0.5em;
-    bottom: 2em;
+    bottom: 1em;
     overflow: auto;
 }
 
@@ -26,4 +42,4 @@ body {
     left: 0px;
     width: 100%;
     overflow: hidden;
-}
+} */

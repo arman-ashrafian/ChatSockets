@@ -5,6 +5,7 @@ window.onload = function () {
     let msg = document.getElementById("msg");
     let log = document.getElementById("log");
     let screenname = "";
+    let fromSelf = false;
 
     let websocketurl = (DEBUG ?
         "ws://" : "wss://") + document.location.host + "/ws";
@@ -43,7 +44,9 @@ window.onload = function () {
 
     function displayMessage(mes) {
         let message = JSON.parse(mes)
-        let item = document.createElement("div");
+        let item = document.createElement("h4");
+
+        fromSelf = (message.from == screenname);
 
         // display message
         item.innerHTML = `<b>${message.from}</b>: ${message.message}`;
@@ -73,6 +76,11 @@ window.onload = function () {
 
     function appendLog(item) {
         let doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+        item.classList.add("card", "messagecard")
+
+        fromSelf ? item.classList.add("blue", "lighten-1") :
+            item.classList.add("grey", "lighten-1");
+
         log.appendChild(item);
         if (doScroll) {
             log.scrollTop = log.scrollHeight - log.clientHeight;
