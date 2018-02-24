@@ -1,11 +1,10 @@
 window.onload = function () {
-    const DEBUG = true;
+    const DEBUG = false;
 
     let conn;
     let msg = document.getElementById("msg");
     let log = document.getElementById("log");
     let screenname = "";
-    let fromSelf = false;
 
     let websocketurl = (DEBUG ?
         "ws://" : "wss://") + document.location.host + "/ws";
@@ -18,10 +17,12 @@ window.onload = function () {
         }
     })
 
+    /* check webscoket support */
     if (window["WebSocket"]) {
         conn = new WebSocket(websocketurl);
         conn.onclose = function (evt) {
             let item = document.createElement("div");
+            
             item.innerHTML = "<b>Connection closed.</b>";
             appendLog(item);
         };
@@ -46,11 +47,19 @@ window.onload = function () {
         let message = JSON.parse(mes)
         let item = document.createElement("h4");
 
-        fromSelf = (message.from == screenname);
+        let backgroundColor = message.from === screenname ? "blue":"grey"
+        
+        if(message.from === screenname) {
+            backgroundColor = "blue";
+            item.style.cssText = "margin-left: 60px;";
+        } else {
+            backgroundColor = "grey";
+            item.style.cssText = "margin-right: 60px;";
+        }
 
         // display message
         item.innerHTML = `<b>${message.from}</b>: ${message.message}`;
-        appendLog(item);
+        appendLog(item, backgroundColor);
     }
 
     function sendMessage() {
@@ -74,13 +83,9 @@ window.onload = function () {
         return false;
     }
 
-    function appendLog(item) {
+    function appendLog(item, backgroundColor) {
         let doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
-        item.classList.add("card", "messagecard")
-
-        fromSelf ? item.classList.add("blue", "lighten-1") :
-            item.classList.add("grey", "lighten-1");
-
+        item.classList.add("card", "messagecard", backgroundColor, "lighten-1", "flow-text")
         log.appendChild(item);
         if (doScroll) {
             log.scrollTop = log.scrollHeight - log.clientHeight;
