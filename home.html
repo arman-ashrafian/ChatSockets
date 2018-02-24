@@ -3,16 +3,32 @@
 
 <head>
     <title>Chat Example</title>
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- My JS -->
     <script src="/static/chat.js"></script>
+    <!-- My CSS -->
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-    <div id="log"></div>
-    <form id="form">
-        <input type="submit" value="Send" />
-        <input type="text" id="msg" size="64" />
-    </form>
+    <div class="container">
+        <div id="log"></div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <i id="sendButton" class="material-icons prefix">send</i>
+                <input type="text" id="chatMsg" size="64" />
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
