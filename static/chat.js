@@ -1,12 +1,16 @@
 window.onload = function () {
-    var conn;
-    var msg = document.getElementById("msg");
-    var log = document.getElementById("log");
-    var screenname = ""
+    const DEBUG = true;
 
+    let conn;
+    let msg = document.getElementById("msg");
+    let log = document.getElementById("log");
+    let screenname = "";
+
+    let websocketurl = (DEBUG ?
+        "ws://" : "wss://") + document.location.host + "/ws";
 
     function appendLog(item) {
-        var doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
+        let doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         log.appendChild(item);
         if (doScroll) {
             log.scrollTop = log.scrollHeight - log.clientHeight;
@@ -21,39 +25,39 @@ window.onload = function () {
         if (!msg.value) {
             return false;
         }
-        if(screenname == "") {
+        if (screenname == "") {
             promptUserForScreenName()
         }
-        var message = {
+        let message = {
             message: msg.value,
             from: screenname
         }
         conn.send(JSON.stringify(message));
-        msg.value = ""; // clear message box
+        msg.value = ""; // clear message input field
         return false;
     };
 
     if (window["WebSocket"]) {
-        conn = new WebSocket("wss://" + document.location.host + "/ws");
+        conn = new WebSocket(websocketurl);
         conn.onclose = function (evt) {
-            var item = document.createElement("div");
+            let item = document.createElement("div");
             item.innerHTML = "<b>Connection closed.</b>";
             appendLog(item);
         };
         /* GET MESSAGE */
         conn.onmessage = function (evt) {
-            var messages = evt.data.split('\n');
-            for (var i = 0; i < messages.length; i++) {
-                var message = JSON.parse(messages[i])
-                var item = document.createElement("div");
-                
+            let messages = evt.data.split('\n');
+            for (let i = 0; i < messages.length; i++) {
+                let message = JSON.parse(messages[i])
+                let item = document.createElement("div");
+
                 // display message
                 item.innerHTML = `<b>${message.from}</b>: ${message.message}`;
                 appendLog(item);
             }
         };
     } else {
-        var item = document.createElement("div");
+        let item = document.createElement("div");
         item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
         appendLog(item);
     }
