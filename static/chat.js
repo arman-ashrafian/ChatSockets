@@ -10,7 +10,9 @@ window.onload = function () {
         "ws://" : "wss://") + document.location.host + "/ws";
 
     // Initialize screenname modal
-    $('.modal').modal();
+    $('.modal').modal({
+        ready: () => {$("#screenname").focus();}
+    });
     $("#screennameError").hide();   // hide error initially
     $("#modalAgree").click(() => {
         let sn = $("#screenname").val();
@@ -20,6 +22,7 @@ window.onload = function () {
                 if (data['okay']) {
                     $('#screennameModal').modal('close');
                     screenname = sn;
+                    sendMessage();
                 } else {
                     $("#screennameError").show();
                 }
