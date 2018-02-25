@@ -3,7 +3,7 @@
 
 <head>
     <title>ChatSocket</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- JQUERY -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -30,6 +30,22 @@
                 <i id="sendButton" class="material-icons prefix">send</i>
                 <input style="font-size: 24pt;" id="chatMsg" />
             </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Structure -->
+    <div id="screennameModal" class="modal">
+        <div class="modal-content">
+            <div class="input-field">
+                <input type="text" id="screenname">
+                <label for="screenname">Screenname</label>
+            </div>
+            <h5 id="screennameError" class="red-text">Screenname taken.</h5>
+        </div>
+        <div class="modal-footer">
+            <a id="modalAgree" class="waves-effect waves-green btn-flat">Okay</a>
         </div>
     </div>
 </body>

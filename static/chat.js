@@ -1,5 +1,5 @@
 window.onload = function () {
-    const DEBUG = false;
+    const DEBUG = true;
 
     let conn;
     let msg = document.getElementById("msg");
@@ -8,6 +8,24 @@ window.onload = function () {
 
     let websocketurl = (DEBUG ?
         "ws://" : "wss://") + document.location.host + "/ws";
+
+    // Initialize screenname modal
+    $('.modal').modal();
+    $("#screennameError").hide();   // hide error initially
+    $("#modalAgree").click(() => {
+        let sn = $("#screenname").val();
+        fetch(`registeruser/${sn}`)
+            .then((resp) => {return resp.json()})
+            .then((data) => {
+                if (data['okay']) {
+                    $('#screennameModal').modal('close');
+                    screenname = sn;
+                } else {
+                    $("#screennameError").show();
+                }
+            })
+    })
+
 
     /* Set events for send click & enter pressed */
     $("#sendButton").click(sendMessage)
@@ -21,8 +39,8 @@ window.onload = function () {
     if (window["WebSocket"]) {
         conn = new WebSocket(websocketurl);
         conn.onclose = function (evt) {
+            fetch(`unregister/${screenname}`)
             let item = document.createElement("div");
-            
             item.innerHTML = "<b>Connection closed.</b>";
             appendLog(item);
         };
@@ -39,17 +57,13 @@ window.onload = function () {
         appendLog(item);
     }
 
-    function promptUserForScreenName() {
-        screenname = prompt("Enter screen name ya dum bitch");
-    }
-
     function displayMessage(mes) {
         let message = JSON.parse(mes)
         let item = document.createElement("h4");
 
-        let backgroundColor = message.from === screenname ? "blue":"grey"
-        
-        if(message.from === screenname) {
+        let backgroundColor = message.from === screenname ? "blue" : "grey"
+
+        if (message.from === screenname) {
             backgroundColor = "blue";
             item.style.cssText = "margin-left: 60px;";
         } else {
@@ -73,6 +87,7 @@ window.onload = function () {
         }
         if (screenname == "") {
             promptUserForScreenName()
+            return false;
         }
         let message = {
             message: msg.val(),
@@ -90,5 +105,9 @@ window.onload = function () {
         if (doScroll) {
             log.scrollTop = log.scrollHeight - log.clientHeight;
         }
+    }
+
+    function promptUserForScreenName() {
+        $('#screennameModal').modal('open');
     }
 };
