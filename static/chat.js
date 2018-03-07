@@ -60,6 +60,9 @@ window.onload = function () {
         appendLog(item);
     }
 
+    // displayMessage
+    // @param: messsage to display to log
+    // decides background color depending message sender
     function displayMessage(mes) {
         let message = JSON.parse(mes)
         let item = document.createElement("h4");
@@ -79,16 +82,15 @@ window.onload = function () {
         appendLog(item, backgroundColor);
     }
 
+    // Send message as JSON
+    // - gets message from DOM
     function sendMessage() {
         let msg = $("#chatMsg");
 
-        if (!conn) {
+        if (!conn || !msg.val()) {
             return false;
         }
-        if (!msg.val()) {
-            return false;
-        }
-        if (screenname == "") {
+        if (screenname === "") {
             promptUserForScreenName()
             return false;
         }
@@ -96,11 +98,14 @@ window.onload = function () {
             message: msg.val(),
             from: screenname
         }
-        conn.send(JSON.stringify(message));
+        conn.send(JSON.stringify(message)); // send message json
         msg.val(""); // clear message input field
         return false;
     }
 
+    // appendLog
+    // @param: html elem, background color of card 
+    // scrolls down if necessary
     function appendLog(item, backgroundColor) {
         let doScroll = log.scrollTop > log.scrollHeight - log.clientHeight - 1;
         item.classList.add("card", "messagecard", backgroundColor, "lighten-1", "flow-text")
@@ -110,6 +115,7 @@ window.onload = function () {
         }
     }
 
+    // open modal to get screenname
     function promptUserForScreenName() {
         $('#screennameModal').modal('open');
     }
